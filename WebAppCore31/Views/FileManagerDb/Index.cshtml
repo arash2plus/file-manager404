@@ -1,0 +1,106 @@
+﻿@model IEnumerable<WebAppCore31.Models.FileModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+
+<form asp-action="FileUpload" asp-controller="FileManagerDb" enctype="multipart/form-data" method="post" id="Frm">
+    <input type="file" id="filess" name="filess">
+    <input type="checkbox" id="privacyType" name="privacyType" /> @* todo*@
+
+    <button type="button" onclick="UploadHit()">  Send </button>
+</form>
+
+<hr />
+
+<button type="button" onclick="ShowImage()"> Show Image </button>
+<img src="" id="ImagePlate" />
+
+<button type="button" onclick="DownloadImage()">Download Image</button>
+<button type="button" onclick="DownloadImage2()">Download Image By Id</button>
+
+
+<div class="container">
+    <center><h2>File Lists:</h2></center>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Content)</th>
+                <th>@Html.DisplayNameFor(model => model.Extension)</th>
+                <th>@Html.DisplayNameFor(model => model.PrivacyType)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @*@foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Content)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Extension)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PrivacyType)
+                    </td>
+                    <td>
+                        @Html.ActionLink("DownLoad", "GetFileByGuidDownload", new { item }) |
+
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }*@
+        </tbody>
+    </table>
+</div>
+<script>
+
+    function UploadHit() {
+        event.preventDefault();
+
+        console.log('P');
+
+        $('#Frm').submit();
+    }
+
+    function ShowImage() {
+
+        $.get("/FileManagerDb/GetFileByGuid", { FileGuid: '29c6536c-099a-4aec-9689-50702af2d05b' }, function (data) {
+
+            $('#ImagePlate').attr('src', data);
+        });
+
+    }
+
+    function DownloadImage() {
+        $.get("/FileManagerDb/GetFileByGuidDownload", { FileGuid: '29c6536c-099a-4aec-9689-50702af2d05b' }, function (data) {
+
+            var a = $("<a>")
+                .attr("href", "http://localhost:65213/" + data)
+                .attr("download", "img.jpg")
+                .appendTo("body");
+
+            a[0].click();
+
+            a.remove();
+        });
+    }
+
+    function DownloadImage2() {
+        $.get("/FileManagerDb/GetFileByFileId", { FileId: '16435703' }, function (data) {
+
+            var a = $("<a>")
+                .attr("href", "http://localhost:65213/" + data)
+                .attr("download", data)
+                .appendTo("body");
+
+            a[0].click();
+
+            a.remove();
+        });
+    }
+</script>

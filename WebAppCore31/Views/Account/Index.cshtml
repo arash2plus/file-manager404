@@ -1,0 +1,39 @@
+﻿@model WebAppCore31.Models.AccountModel
+
+
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+
+        <h1>@ViewData["Title"]</h1>
+
+        <form asp-action="Login" asp-controller="Account" method="post" id="Login">
+            @*<input type="file" id="filess" name="filess">
+                <button type="button" onclick="UploadHit()">  Send </button>*@
+            @*<form asp-route-returnUrl="@Model.ReturnUrl" method="post">*@
+            @*<h4>Create a new account.</h4>*@
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AccountId">Account ID</label>
+                <input asp-for="AccountId" class="form-control" placeholder="Account ID" />
+                <span asp-validation-for="AccountId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" placeholder="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" onclick="'@Html.ActionLink("","InsertAccount", "Account")'">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
